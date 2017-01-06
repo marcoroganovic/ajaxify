@@ -61,12 +61,8 @@ var Ajaxify = (function() {
     opts.request.open(opts.method, opts.url);
     setHeaders(opts.request, opts.headers);
     if(opts.data) {
-      var params = getQueryString(opts.data);
-      opts.request.setRequestHeader(
-        "Content-Type", 
-        "application/x-www-form-urlencoded"
-      );
-      opts.request.send(params);
+      opts.request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      opts.request.send(getQueryString(opts.data));
     } else {
       opts.request.send();
     }
