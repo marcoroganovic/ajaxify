@@ -26,4 +26,5 @@ getPosts.send();
 // after some time
 
 console.log(collection); // should result in
+[Object, Object, Object ...]
 ```
