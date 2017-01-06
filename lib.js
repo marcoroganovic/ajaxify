@@ -1,4 +1,4 @@
-var Ajaxify = (function() {
+var ajaxify = (function() {
   
   "use strict";
 
