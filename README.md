@@ -10,7 +10,7 @@ that can be called on some event or such.
 var collection;
 
 var getPosts = ajaxify.get({
-  url: "http://jsonplaceholder.typicode.com/posts/,
+  url: "http://jsonplaceholder.typicode.com/posts/",
 
   success: (data) => {
     collection = JSON.parse(data);
