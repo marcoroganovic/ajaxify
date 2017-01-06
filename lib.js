@@ -1,5 +1,7 @@
 var Ajaxify = (function() {
   
+  "use strict";
+
   var methods = ["GET", "POST", "PUT", "DELETE"];
 
   function isFunction(arg) {
@@ -13,7 +15,6 @@ var Ajaxify = (function() {
     return function(opts) {
       opts.request = new XMLHttpRequest();
       setStateChange(opts.request, opts.success, opts.failure);
-
       var config = getConfig(method, opts);
       
       if(opts.doSend) {
