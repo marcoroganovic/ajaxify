@@ -89,10 +89,12 @@ var Ajaxify = (function() {
   }
 
   function getQueryString(obj) {
-    return typeof obj === "string" ? obj : 
-           Object.keys(obj).map(function(key) {
-             return encodeURIComponent(key) + "=" + encodeURIComponent(obj[key]);
-           }).join("&");
+    if(typeof obj === "string") return obj;
+    var props = Object.keys(obj);
+
+    return props.map(function(prop) {
+      return encodeURIComponent(prop) + "=" + encodeURIComponent(obj[prop]);
+    }).join("&");
   }
 
 
