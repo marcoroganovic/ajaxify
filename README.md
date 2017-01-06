@@ -1,4 +1,4 @@
-## jQuery's API inspired AJAX library
+## AJAX library/wrapper inspired by jQuery's API
 
 ### Example usage
 
