@@ -18,7 +18,7 @@
     return `<article><h1>${data.title}</h1><p>${data.body}</p></article>`;
   }
 
-  var getPosts = Ajax.get({
+  var getPosts = Ajaxify.get({
     url: root + "/posts",
 
     success: function(data) {
