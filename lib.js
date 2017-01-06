@@ -1,4 +1,4 @@
-var Ajax = (function() {
+var Ajaxify = (function() {
   
   var methods = ["GET", "POST", "PUT", "DELETE"];
 
