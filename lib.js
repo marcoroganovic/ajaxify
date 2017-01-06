@@ -12,29 +12,37 @@ var Ajaxify = (function() {
 
     return function(opts) {
       opts.request = new XMLHttpRequest();
+      setStateChange(opts.request, opts.success, opts.failure);
 
-      opts.request.onreadystatechange = function() {
-        if(isSuccessfulRequest(opts.request)) {
-          handleSuccess(opts.request, opts.success);
-        } else {
-          handleFailure(opts.request, opts.failure);
-        }
-      }
-    
-      var config = {
-        request: opts.request, headers: opts.headers,
-        method: httpMethod, data: opts.data, url: opts.url
-      }
+      var config = getConfig(method, opts);
       
       if(opts.doSend) {
         sendRequest(config);
       } else {
-        opts.send = function() {
-          sendRequest(config);
-        }
+        opts.send = function() { sendRequest(config); }
       }
 
       return opts;
+    }
+  }
+
+  function setStateChange(request, success, fail) {
+    request.onreadystatechange = function() {
+      if(isSuccessfulRequest(request)) {
+        handleSuccess(request, success);
+      } else {
+        handleFailure(request, fail);
+      }
+    }
+  }
+
+  function getConfig(httpMethod, opts) {
+    return {
+      request: opts.request, 
+      headers: opts.headers,
+      method: httpMethod, 
+      data: opts.data, 
+      url: opts.url
     }
   }
 
