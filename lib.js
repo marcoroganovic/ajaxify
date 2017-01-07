@@ -1,8 +1,9 @@
 var ajaxify = (function() {
-  
+
   "use strict";
 
   var methods = ["GET", "POST", "PUT", "DELETE"];
+  var dataHeader = ["Content-Type", "application/x-www-form-urlencoded"];
 
   function isFunction(arg) {
     return typeof arg === "function";
@@ -16,15 +17,15 @@ var ajaxify = (function() {
       opts.request = new XMLHttpRequest();
       setStateChange(opts.request, opts.success, opts.failure);
       var config = getConfig(method, opts);
-      
+
       if(opts.doSend) {
         sendRequest(config);
       } else {
-        opts.send = function() { sendRequest(config); }
+        opts.send = function() { sendRequest(config); };
       }
 
       return opts;
-    }
+    };
   }
 
   function setStateChange(request, success, fail) {
@@ -39,16 +40,16 @@ var ajaxify = (function() {
 
   function getConfig(httpMethod, opts) {
     return {
-      request: opts.request, 
+      request: opts.request,
       headers: opts.headers,
-      method: httpMethod, 
-      data: opts.data, 
+      method: httpMethod,
+      data: opts.data,
       url: opts.url
-    }
+    };
   }
 
   function isSuccessfulRequest(request) {
-    return (request.readyState === XMLHttpRequest.DONE && 
+    return (request.readyState === XMLHttpRequest.DONE &&
             request.status === 200 || request.status === 201);
   }
 
@@ -62,7 +63,10 @@ var ajaxify = (function() {
     if(isFunction(callback)) {
       callback(request.responseText, request.status);
     } else {
-      console.log("AJAX error: unhandled error with reponse " + request.status + " and body: " + request.responseText);
+      var error = "AJAX error: unhandled error with status ";
+      error += request.status;
+      error += " and body: " + request.responseText;
+      console.error(error)
     }
   }
 
@@ -70,7 +74,7 @@ var ajaxify = (function() {
     opts.request.open(opts.method, opts.url);
     setHeaders(opts.request, opts.headers);
     if(opts.data) {
-      opts.request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      opts.request.setRequestHeader(dataHeader[0], dataHeader[1]);
       opts.request.send(getQueryString(opts.data));
     } else {
       opts.request.send();
