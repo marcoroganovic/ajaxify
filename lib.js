@@ -1,4 +1,12 @@
-var ajaxify = (function() {
+(function(lib) {
+  if(typeof module === "object" && typeof exports === "object") {
+    module.exports = lib();
+  } else if(typeof define === "function" && define.amd) {
+    return define([], lib);
+  } else {
+    window.ajaxify = lib();
+  }
+}(function() {
 
   "use strict";
 
@@ -111,4 +119,4 @@ var ajaxify = (function() {
 
   return API;
 
-})();
+}));
