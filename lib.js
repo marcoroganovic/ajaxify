@@ -43,7 +43,7 @@
       } else {
         handleFailure(request, fail);
       }
-    }
+    };
   }
 
   function getConfig(httpMethod, opts) {
@@ -91,7 +91,7 @@
 
   function setHeaders(request, headers) {
     if(headers) {
-      for(let header in headers) {
+      for(var header in headers) {
         request.setRequestHeader(header, headers[header]);
       }
     }
