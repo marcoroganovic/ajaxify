@@ -17,11 +17,29 @@
     return typeof arg === "function";
   }
 
+  function validateConfigObject(actual) {
+    var test = {
+      url: "string",
+      success: "function",
+      failure: "function"
+    }
+
+    for(var prop in test) {
+      if(typeof actual[prop] !== test[prop]) {
+        console.error("Config object must contain '" + prop + "' property.");
+        return false;
+      }
+    }
+    
+    return true;
+  }
+
   function createRequest(method) {
 
     var httpMethod = method;
 
     return function(opts) {
+      if(!validateConfigObject(opts)) return;
       opts.request = new XMLHttpRequest();
       setStateChange(opts.request, opts.success, opts.failure);
       var config = getConfig(method, opts);

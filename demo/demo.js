@@ -19,7 +19,7 @@
   }
 
   var getPosts = ajaxify.get({
-    url: root + "/posts",
+    // url: root + "/posts",
 
     success: function(data) {
       Collection = JSON.parse(data);
