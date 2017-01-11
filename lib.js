@@ -22,7 +22,7 @@
       url: "string",
       success: "function",
       failure: "function"
-    }
+    };
 
     for(var prop in test) {
       if(typeof actual[prop] !== test[prop]) {
@@ -30,7 +30,7 @@
         return false;
       }
     }
-    
+
     return true;
   }
 
