@@ -1,5 +1,8 @@
 ## Promise based AJAX library
 
+Extremely simple to use library for AJAX request that's based on ES2015
+Promises.
+
 ### GET Method
 
 If second argument is boolean `true` the browser will send request for data in
@@ -28,7 +31,7 @@ ajaxify.get("http://jsonplaceholder.typicode.com/posts/", true)
 ### POST, PUT, DELETE methods
 
 To send data with one of write methods you would add data property on
-config object that also can contain `headers`;
+config object that also can contain `headers`.
 
 ```javascript
 const config = {
