@@ -1,30 +1,21 @@
-## AJAX library/wrapper inspired by jQuery's API
+## Promise based AJAX library
 
-### Example usage
+If second arguments is boolean `true` the browser will send request for data in
+JSON format. If arguments remain empty it will just return text.
 
-If configuration object contains 'doSend' property equal to true it will
-automatically send request otherwise it will return object with 'send' method
-that can be called on some event or such.
+### Sample usage
 
 ```javascript
-var collection;
 
-var getPosts = ajaxify.get({
-  url: "http://jsonplaceholder.typicode.com/posts/",
+ajaxify.get("http://jsonplaceholder.typicode.com/posts/", true)
+  .progress(() => {
+    displayProgressBar();
+  })
+  .then((data) => {
+    displayPosts(data);
+  })
+  .catch(() => {
+    displayError();
+  });
 
-  success: (data) => {
-    collection = JSON.parse(data);
-  },
-
-  failure: (data, statusCode) => {
-    console.log(data);
-  }
-});
-
-getPosts.send();
-
-// after some time
-
-console.log(collection); // should result in
-[Object, Object, Object ...]
 ```

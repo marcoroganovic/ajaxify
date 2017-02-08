@@ -1,4 +1,5 @@
 (function(lib) {
+  
   if(typeof module === "object" && typeof exports === "object") {
     module.exports = lib();
   } else if(typeof define === "function" && define.amd) {
@@ -6,135 +7,111 @@
   } else {
     window.ajaxify = lib();
   }
-}(function() {
+
+})(function(global) {
 
   "use strict";
 
-  var methods = ["GET", "POST", "PUT", "DELETE"];
-  var dataHeader = ["Content-Type", "application/x-www-form-urlencoded"];
+  var HTTP_METHODS = ["GET", "POST", "PUT", "DELETE"];
 
-  function isFunction(arg) {
+  function isBool(arg) {
+    return typeof arg === "boolean";
+  }
+
+  function isFunc(arg) {
     return typeof arg === "function";
   }
 
-  function validateConfigObject(actual) {
-    var test = {
-      url: "string",
-      success: "function",
-      failure: "function"
-    };
-
-    for(var prop in test) {
-      if(typeof actual[prop] !== test[prop]) {
-        console.error("Config object must contain '" + prop + "' property.");
-        return false;
-      }
-    }
-
-    return true;
+  function isWriteMethod(method) {
+    return (
+      typeof method === "post" || 
+      typeof method === "put"  || 
+      typeof method === "delete"
+    );
   }
 
-  function createRequest(method) {
-
-    var httpMethod = method;
-
-    return function(opts) {
-      if(!validateConfigObject(opts)) return;
-      opts.request = new XMLHttpRequest();
-      setStateChange(opts.request, opts.success, opts.failure);
-      var config = getConfig(method, opts);
-
-      if(opts.doSend) {
-        sendRequest(config);
+  function addProgressMethod(obj, arr) {
+    obj.progress = function(cb) {
+      if(isFunc(cb)) {
+        arr.push(cb);
+        return this;
       } else {
-        opts.send = function() { sendRequest(config); };
-      }
-
-      return opts;
-    };
-  }
-
-  function setStateChange(request, success, fail) {
-    request.onreadystatechange = function() {
-      if(isSuccessfulRequest(request)) {
-        handleSuccess(request, success);
-      } else {
-        handleFailure(request, fail);
-      }
-    };
-  }
-
-  function getConfig(httpMethod, opts) {
-    return {
-      request: opts.request,
-      headers: opts.headers,
-      method: httpMethod,
-      data: opts.data,
-      url: opts.url
-    };
-  }
-
-  function isSuccessfulRequest(request) {
-    return (request.readyState === XMLHttpRequest.DONE &&
-            request.status === 200 || request.status === 201);
-  }
-
-  function handleSuccess(request, callback) {
-    if(isFunction(callback)) {
-      callback(request.responseText);
-    }
-  }
-
-  function handleFailure(request, callback) {
-    if(isFunction(callback)) {
-      callback(request.responseText, request.status);
-    } else {
-      var error = "AJAX error: unhandled error with status ";
-      error += request.status;
-      error += " and body: " + request.responseText;
-      console.error(error)
-    }
-  }
-
-  function sendRequest(opts) {
-    opts.request.open(opts.method, opts.url);
-    setHeaders(opts.request, opts.headers);
-    if(opts.data) {
-      opts.request.setRequestHeader(dataHeader[0], dataHeader[1]);
-      opts.request.send(getQueryString(opts.data));
-    } else {
-      opts.request.send();
-    }
-  }
-
-  function setHeaders(request, headers) {
-    if(headers) {
-      for(var header in headers) {
-        request.setRequestHeader(header, headers[header]);
+        throw new TypeError("Expected function, instead got " + typeof cb);
       }
     }
   }
 
-  function addData(data) {
-    return data instanceof FormData ? data : getQueryString(data);
+  function handleProgress(req, progressFns) {
+    progressFns.forEach(function(fn) {
+      fn(req);
+    });
   }
 
-  function getQueryString(obj) {
-    if(typeof obj === "string") return obj;
-    var props = Object.keys(obj);
-
-    return props.map(function(prop) {
-      return encodeURIComponent(prop) + "=" + encodeURIComponent(obj[prop]);
-    }).join("&");
+  function handleSuccess(req, resolve, opts) {
+    return function(e) {
+      resolve(
+        isBool(opts) ? 
+        JSON.parse(req.responseText) : 
+        req.responseText
+      );
+    }
   }
 
+  function handleError(req, reject) {
+    return function(e) {
+      reject(req.status, req.responseText);
+    }
+  }
+
+  function setupListeners(xhr, opts, resolve, reject, progressArr) {
+    xhr.addEventListener("progress", handleProgress(xhr, progressArr));
+    xhr.addEventListener("load", handleSuccess(xhr, resolve, opts));
+    xhr.addEventListener("error", handleError(reject));
+  }
+
+  function setDefaultHeaders(method, headers, opts) {
+    headers["Content-Type"] = (
+        isBool(opts) ? "application/json" :
+        isWriteMethod(method) ? "application/x-www-form-urlencoded" : ""
+      );
+  }
+
+
+  function setHeaders(req, headers) {
+    for(var header in headers) {
+      if(headers.hasOwnProperty(headers)) {
+        req.setRequestHeader(header, headers[header]);
+      }
+    }
+  }
+
+
+  function createMethod(method) {
+    var httpMethod = method.toLowerCase();
+    var progressFns = [];
+
+    return function(url, opts) {
+      var xhr = new XMLHttpRequest(); xhr.open(method, url);
+      var data = opts.data || null; var headers = opts.headers || {};
+
+      var promise = new Promise(function(resolve, reject) {
+        setupListeners(xhr, opts, resolve, reject, progressFns);
+        setDefaultHeaders(method, headers,  opts); 
+        setHeaders(xhr, headers);
+        xhr.send(data);
+      });
+
+      addProgressMethod(promise, progressFns); 
+      return promise;
+    }
+  }
 
   var API = {};
 
-  methods.forEach(function(method) {
-    API[method.toLowerCase()] = createRequest(method);
+  HTTP_METHODS.forEach(function(method) {
+    API[method.toLowerCase()] = createMethod(method);
   });
 
   return API;
 
-}));
+});
