@@ -31,5 +31,22 @@ To send data with one of write request you would add data property on
 config object.
 
 ```javascript
-// todo
+const config = {
+  data: {
+    email: "me@email.com",
+    username: "johndoe"
+  }
+};
+
+ajaxify.post("https://localhost:3000/user", config)
+  .progress(() => {
+    displayProgressBar();
+  })
+  .then(() => {
+    displaySuccesMessage("User was successfully created!");
+  })
+  .catch(() => {
+    displayErrorMessage("Failed to create new user!");
+  });
+
 ```
