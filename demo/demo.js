@@ -1,6 +1,5 @@
 (function() {
   
-
   // cache DOM elements
   var button = document.querySelector(".get-posts");
   var posts = document.querySelector(".posts");
@@ -16,21 +15,19 @@
     return `<article><h1>${data.title}</h1><p>${data.body}</p></article>`;
   }
 
-  var getPosts = ajaxify.get({
-    // url: root + "/posts",
-
-    success: function(data) {
-      Collection = JSON.parse(data);
-      renderPosts(Collection);
-    },
-
-    failure: function() {
-      posts.innerHTML = "Loading...";
-    }
-  });
-
   button.addEventListener("click", function(e) {
-    getPosts.send();
+    ajaxify.get("http://jsonplaceholder.typicode.com/posts/", true)
+      .progress(function() {
+        posts.innerHTML = "Loading...";
+      })
+
+      .then(function(data) {
+        renderPosts(data);
+      })
+
+      .catch(function(err) {
+        posts.innerHTML = "Failed!";
+      });
   });
   
 })();

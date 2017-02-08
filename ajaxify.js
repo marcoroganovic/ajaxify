@@ -22,6 +22,10 @@
     return typeof arg === "boolean";
   }
 
+  function isObject(arg) {
+    return typeof arg === "object";
+  }
+
   function isFunc(arg) {
     return typeof arg === "function";
   }
@@ -91,7 +95,7 @@
 
 
   function getQueryString(obj) {
-    if(isString(obj)) return obj;
+    if(!isObject(obj)) return obj;
 
     var props = Object.keys(obj);
 
@@ -101,7 +105,7 @@
   }
 
   function addData(data) {
-    return data instanceof FormData ? data: getQueryString(data);
+    return data instanceof FormData ? data : getQueryString(data);
   }
 
   function createMethod(method) {
