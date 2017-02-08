@@ -31,7 +31,7 @@ ajaxify.get("http://jsonplaceholder.typicode.com/posts/", true)
 ### POST, PUT, DELETE methods
 
 To send data with one of write methods you would add `data` property on
-config object that also can contain `headers`. If `headers` object ommited or
+config object that also can contain `headers`. If `headers` object is ommited or
 left blank `Content-Type: application/x-www-form-urlencoded` header will be
 automatically set.
 
