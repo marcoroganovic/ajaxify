@@ -8,7 +8,7 @@
     window.ajaxify = lib();
   }
 
-})(function(global) {
+})(function() {
 
   "use strict";
 
