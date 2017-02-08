@@ -2,10 +2,10 @@
 
 ### GET Method
 
-If second arguments is boolean `true` the browser will send request for data in
-JSON format. If arguments remain empty it will just return text.
+If second argument is boolean `true` the browser will send request for data in
+JSON format. If argument remains empty it will just return text.
 
-Also to set custom headers you can pass it an `object` with headers attribute
+Also to set custom headers you can pass it an `object` with `headers` key
 that also should be an `object`.
 
 ### Sample usage
