@@ -1,7 +1,5 @@
 (function() {
   
-  var root = "http://jsonplaceholder.typicode.com";
-  var Collection;
 
   // cache DOM elements
   var button = document.querySelector(".get-posts");

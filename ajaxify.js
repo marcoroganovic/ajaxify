@@ -14,6 +14,10 @@
 
   var HTTP_METHODS = ["GET", "POST", "PUT", "DELETE"];
 
+  function isString(arg) {
+    return typeof arg === "string";
+  }
+
   function isBool(arg) {
     return typeof arg === "boolean";
   }
@@ -86,19 +90,36 @@
   }
 
 
+  function getQueryString(obj) {
+    if(isString(obj)) return obj;
+
+    var props = Object.keys(obj);
+
+    return props.map(function(prop) {
+      return encodeURIComponent(prop) + "=" + encodeURIComponent(obj[prop]);
+    }).join("&");
+  }
+
+  function addData(data) {
+    return data instanceof FormData ? data: getQueryString(data);
+  }
+
   function createMethod(method) {
     var httpMethod = method.toLowerCase();
     var progressFns = [];
 
     return function(url, opts) {
       var xhr = new XMLHttpRequest(); xhr.open(method, url);
-      var data = opts.data || null; var headers = opts.headers || {};
+      var data = addData(opts.data) || null; var headers = opts.headers || {};
 
       var promise = new Promise(function(resolve, reject) {
         setupListeners(xhr, opts, resolve, reject, progressFns);
         setDefaultHeaders(method, headers,  opts); 
         setHeaders(xhr, headers);
-        xhr.send(data);
+        if(data) {
+          xhr.send(data);
+        } else {
+          xhr.send()
       });
 
       addProgressMethod(promise, progressFns); 
