@@ -116,10 +116,7 @@
         setupListeners(xhr, opts, resolve, reject, progressFns);
         setDefaultHeaders(method, headers,  opts); 
         setHeaders(xhr, headers);
-        if(data) {
-          xhr.send(data);
-        } else {
-          xhr.send()
+        xhr.send(data ? data : null);
       });
 
       addProgressMethod(promise, progressFns); 
