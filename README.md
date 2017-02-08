@@ -27,8 +27,8 @@ ajaxify.get("http://jsonplaceholder.typicode.com/posts/", true)
 
 ### POST, PUT, DELETE methods
 
-To send data with one of write request you would add data property on
-config object.
+To send data with one of write methods you would add data property on
+config object that also can contain `headers`;
 
 ```javascript
 const config = {
