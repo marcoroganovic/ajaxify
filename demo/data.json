@@ -1,0 +1,47 @@
+{
+  results: [
+  {
+    gender: "male",
+    name: {
+      title: "mr",
+      first: "alfred",
+      last: "pedersen"
+    },
+    location: {
+      street: "7455 skovengen",
+      city: "brøndby strand",
+      state: "sjælland",
+      postcode: 43707
+    },
+    email: "alfred.pedersen@example.com",
+    login: {
+      username: "beautifuldog475",
+      password: "holycow",
+      salt: "6IPfGuMy",
+      md5: "db1d93337a6e2ad03dc4a39b9c0be5eb",
+      sha1: "b26931927dde3efa19baacfb1d03b6d28457206b",
+      sha256: "05c76ee9be334f90d5ae780a6301951c4e1ebe7806c309e0f4fd604a8fc96031"
+    },
+    dob: "1984-10-05 18:54:48",
+    registered: "2005-06-21 19:01:31",
+    phone: "91609411",
+    cell: "28365346",
+    id: {
+      name: "CPR",
+      value: "382748-5283"
+    },
+    picture: {
+      large: "https://randomuser.me/api/portraits/men/66.jpg",
+      medium: "https://randomuser.me/api/portraits/med/men/66.jpg",
+      thumbnail: "https://randomuser.me/api/portraits/thumb/men/66.jpg"
+    },
+    nat: "DK"
+  }
+  ],
+  info: {
+    seed: "e9ba7260a14de5be",
+    results: 1,
+    page: 1,
+    version: "1.1"
+  }
+}

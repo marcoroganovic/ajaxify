@@ -1,6 +1,4 @@
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -16,9 +14,18 @@ body {
   margin: 0 auto;
 }
 
-article {
+.user {
+  width: 47%;
+  height: 300px;
+  float: left;
   padding: 15px;
-  margin: 10px auto;
+  margin: 5px;
   background: white;
   color: #333;
+}
+
+.user-image img {
+  display: block;
+  margin: 0 auto;
+  border-radius: 50%;
 }

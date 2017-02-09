@@ -1,33 +1,52 @@
 (function() {
   
   // cache DOM elements
-  var button = document.querySelector(".get-posts");
-  var posts = document.querySelector(".posts");
+  var button = document.querySelector(".get-users");
+  var posts = document.querySelector(".users");
   
-  function renderPosts(collection) {
+  function renderUsers(collection) {
     posts.innerHTML = "";
-    collection.forEach(article => {
-      posts.innerHTML += renderArticleUI(article);
+    collection.forEach(user => {
+      posts.innerHTML += renderUserUI(user);
     });
   }
 
-  function renderArticleUI(data) {
-    return `<article><h1>${data.title}</h1><p>${data.body}</p></article>`;
+  function renderUserUI(data) {
+    return `
+      <div class="user">
+        <div class="user-image">
+          <img src="${data.picture.large}" alt="User Image" />
+        </div>
+        <div class="user-info">
+          <p class="name">
+            <b>Name:</b> ${data.name.title}. ${data.name.first} ${data.name.last}
+          </p>
+          <p class="info">
+            <p><b>Email:</b> ${data.email}</p>
+          </p>
+          <p class="phone">
+            <p><b>Phone:</b> ${data.phone}</p>
+          </p>
+        </div>
+      </div>
+    `;
   }
 
   button.addEventListener("click", function(e) {
-    ajaxify.get("http://jsonplaceholder.typicode.com/posts/", true)
+    
+    ajaxify.get("https://randomuser.me/api/?results=10", true)
       .progress(function() {
         posts.innerHTML = "Loading...";
       })
 
       .then(function(data) {
-        renderPosts(data);
+        renderUsers(data.results);
       })
 
       .catch(function(err) {
         posts.innerHTML = "Failed!";
       });
+
   });
   
 })();
