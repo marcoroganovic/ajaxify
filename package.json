@@ -1,0 +1,19 @@
+{
+  "name": "ajaxify",
+  "version": "1.0.0",
+  "description": "AJAX requests with ES2015 Promises",
+  "main": "ajaxify.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcoroganovic/ajaxify.git"
+  },
+  "author": "Marco Roganovic <marcoroganovic@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/marcoroganovic/ajaxify/issues"
+  },
+  "homepage": "https://github.com/marcoroganovic/ajaxify#readme"
+}
