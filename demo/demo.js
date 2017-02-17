@@ -40,6 +40,7 @@
       })
 
       .then(function(data) {
+        console.log(data);
         renderUsers(data.results);
       })
 
