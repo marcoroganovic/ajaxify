@@ -1,5 +1,5 @@
 {
-  "name": "ajaxify",
+  "name": "ajaxify-progress",
   "version": "1.0.0",
   "description": "AJAX requests with ES2015 Promises",
   "main": "ajaxify.js",
